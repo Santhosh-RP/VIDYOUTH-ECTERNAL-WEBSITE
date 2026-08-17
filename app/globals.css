@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+:root {
+  --background: #08111f;
+  /* Primary / secondary text and accent system — refined, trustworthy slate
+     with a single restrained sky-blue accent (replaces the neon cyan). */
+  --foreground: #ffffff; /* primary text */
+  --color-text-secondary: #cbd5e1; /* secondary / body text */
+  --accent: #2563eb; /* accent */
+  --accent-hover: #60a5fa; /* hover accent */
+  --border-accent: rgba(255, 255, 255, 0.08); /* subtle accent borders */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Premium type stack: Sora display headings + Inter body. */
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-heading: var(--font-sora), var(--font-inter), system-ui, sans-serif;
+  /* Mono repointed to Inter — the old terminal/mono labels now read clean. */
+  --font-mono: var(--font-inter), ui-monospace, monospace;
+
+  /* ── Palette remap ────────────────────────────────────────────────────
+     The site is saturated with `cyan-*` utilities (139 usages) that read as
+     electric/neon. Remapping the cyan ramp onto Tailwind's softer `sky`
+     ramp instantly de-neons every cyan utility site-wide while keeping the
+     blue "semiconductor" identity. 400 = the accent (#38BDF8), 500 = hover
+     accent (#0EA5E9). */
+  --color-cyan-50: #f0f9ff;
+  --color-cyan-100: #e0f2fe;
+  --color-cyan-200: #bae6fd;
+  --color-cyan-300: #7dd3fc;
+  --color-cyan-400: #38bdf8;
+  --color-cyan-500: #0ea5e9;
+  --color-cyan-600: #0284c7;
+  --color-cyan-700: #0369a1;
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.7;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Confident, highly readable display headings — Apple/Stripe-style tight
+   tracking and weight. Inline utility classes still win where set, so this
+   is the baseline for any heading that doesn't override it. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--foreground);
+}
+
+/* Body copy defaults to the secondary slate so long-form text reads calm
+   and trustworthy rather than stark white. */
+p {
+  color: var(--color-text-secondary);
+}
+
+/* ── Section vertical rhythm ──────────────────────────────────────────
+   Single source of truth for the space between sections. Each section
+   applies `.section-y`; adjacent sections combine to a consistent gap —
+   ~56px (mobile), ~72px (tablet), ~96px (desktop) — so the page reads
+   compact and evenly balanced without doubled padding. */
+.section-y {
+  padding-block: 1.75rem; /* 28px — mobile */
+}
+@media (min-width: 768px) {
+  .section-y {
+    padding-block: 2.25rem; /* 36px — tablet */
+  }
+}
+@media (min-width: 1024px) {
+  .section-y {
+    padding-block: 3rem; /* 48px — desktop */
+  }
+}
+
+/* About must fit a single desktop viewport, so it runs tighter than the shared
+   rhythm above. Scoped by id (higher specificity than `.section-y`, which is
+   unlayered and would otherwise beat any Tailwind `pb-*` utility) so the other
+   five `.section-y` sections keep the standard spacing. Root font-size is 18px,
+   so 1rem = 18px here. */
+#about.section-y {
+  padding-block: 1.25rem; /* 22.5px — mobile */
+}
+@media (min-width: 1024px) {
+  #about.section-y {
+    padding-block: 1.25rem; /* 22.5px — desktop (was 54px) */
+  }
+}
+
+/* Lenis-friendly scroll setup: smoothing happens in JS, so the
+   native scrollbar is replaced with our scroll-progress bar. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis {
+  scrollbar-width: none;
+}
+html.lenis::-webkit-scrollbar,
+html.lenis body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Promote scenes to their own layer; keeps scrub animations on the
+   GPU and prevents repaint cascades from neighbouring sections. */
+[data-scene-index] > div {
+  contain: layout paint;
+  transform: translateZ(0);
+}
+
+/* Optional helper class used in places where we want clipped reveals
+   to share a consistent easing. */
+.cinematic-clip {
+  transition: clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.partner-marquee-track {
+  animation: partner-marquee 26s linear infinite;
+}
+
+.empowerment-word {
+  animation: empowerment-pulse 3.6s ease-in-out infinite alternate;
+}
+
+.empowerment-word:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.empowerment-word:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+@keyframes empowerment-pulse {
+  from {
+    filter: brightness(0.92);
+  }
+  to {
+    filter: brightness(1.18);
+  }
+}
+
+@keyframes partner-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-marquee-track {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Blinking "typing" caret after the rotating hero phrase. */
+@keyframes hero-caret {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}

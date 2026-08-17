@@ -1,0 +1,19 @@
+# dependencies
+/node_modules
+
+# next.js build output
+/.next
+/out
+
+# build cache
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# env / secrets
+.env
+.env.*
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
