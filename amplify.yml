@@ -1,0 +1,22 @@
+# AWS Amplify Hosting build spec.
+# This is a Next.js STATIC EXPORT (next.config.ts -> output: "export"), so
+# `next build` emits a static site into ./out and Amplify serves it as static
+# files (no server/SSR compute). Amplify auto-detects this file on connect.
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    # the static export folder — must match Next's output dir
+    baseDirectory: out
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .next/cache/**/*

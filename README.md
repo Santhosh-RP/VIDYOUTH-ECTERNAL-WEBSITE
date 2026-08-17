@@ -20,8 +20,18 @@ npm run dev        # http://localhost:3000
 npm run build      # outputs the static site to ./out
 ```
 
-## Deploy to a static host
-Connect this repo and use these settings:
+## Deploy on AWS Amplify (primary)
+This repo ships an `amplify.yml` build spec, so Amplify configures itself on
+connect. Steps in the AWS Console:
+
+1. **Amplify → Create new app → Deploy with GitHub** → authorize → pick
+   `Santhosh-RP/VIDYOUTH-ECTERNAL-WEBSITE`, branch `main`.
+2. Amplify reads `amplify.yml` automatically (build `npm run build`, output `out`).
+   Confirm and **Save and deploy**.
+3. You get a live `https://main.<appid>.amplifyapp.com` URL in ~3 min. Every push
+   to `main` auto-redeploys.
+
+Build settings (already encoded in `amplify.yml`):
 
 | Setting | Value |
 |---|---|
@@ -29,11 +39,16 @@ Connect this repo and use these settings:
 | Output directory | `out` |
 | Node version | 18+ |
 
-- **Cloudflare Pages / Netlify / Vercel:** point at this repo, set the build command
-  and output dir above, deploy. Every push to `main` redeploys automatically.
-- **No-build option:** run `npm run build` locally and drag the `out/` folder to
-  app.netlify.com/drop for an instant deploy.
+## Custom domain (vidyouthintelligence.com)
+In Amplify → **Hosting → Custom domains → Add domain** → `vidyouthintelligence.com`
+(add `www` and root). Amplify issues the SSL cert and gives you the DNS records
+(or auto-manages them if the domain's DNS is in Route 53). Point the domain's
+DNS/nameservers accordingly at your registrar.
 
-## Custom domain
-After the first deploy, add `vidyouthintelligence.com` in the host dashboard and
-point the domain's DNS/nameservers at the host (at your registrar).
+> Deep-link 404s: this is a static multi-page export with `trailingSlash`, so
+> routes resolve as `/route/index.html` and work by default. If a host needs it,
+> add a rewrite of `/<*>` → `/404.html` (404) in the console.
+
+## Other hosts (no AWS needed)
+Same build settings work on **Cloudflare Pages / Netlify / Vercel** (free), or run
+`npm run build` locally and drag `out/` to app.netlify.com/drop for an instant deploy.
