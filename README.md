@@ -52,9 +52,10 @@ Set `NEXT_PUBLIC_APP_URL=https://lms.vidyouthintelligence.com` once that domain
 is attached to the app.
 
 > The contact-form API only accepts requests from `vidyouthintelligence.com`,
-> `www.vidyouthintelligence.com` and the marketing CloudFront URL. On an
-> `*.amplifyapp.com` URL the form is blocked by CORS until that origin is added
-> to the API (`vidyouth-aws-infra/lean/marketing.tf`).
+> `www.vidyouthintelligence.com`, the marketing CloudFront URL and the Amplify
+> `main` branch (`https://main.d3j1jl3hgk2blx.amplifyapp.com`). Any other
+> `*.amplifyapp.com` URL is blocked by CORS until that origin is added to the API
+> (`amplify_origin` in `vidyouth-aws-infra/lean/marketing.tf`).
 
 ## Custom domain (vidyouthintelligence.com)
 In Amplify → **Hosting → Custom domains → Add domain** → `vidyouthintelligence.com`

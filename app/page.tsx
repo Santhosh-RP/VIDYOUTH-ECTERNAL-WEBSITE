@@ -1212,9 +1212,6 @@ function ProgramsSection() {
                 ))}
               </div>
             </div>
-            <p className="mx-auto mt-4 max-w-[920px] text-center text-[11px] leading-5 text-red-400">
-              Note: The companies listed are provided for reference only and represent organizations that hire VLSI and Embedded Systems professionals. Their inclusion does not imply any partnership, affiliation, or placement agreement with us.
-            </p>
           </div>
         </Reveal>
       </div>
@@ -1325,9 +1322,6 @@ function IsmSection() {
             ))}
           </div>
         </div>
-        <p className="mx-auto mt-6 max-w-[1000px] text-center text-[11px] leading-5 text-red-300/90">
-          NOTE: Vidyouth Intelligence is a private initiative that supports the vision of the India Semiconductor Mission (ISM). It is not affiliated with, endorsed by, or sponsored by the Government of India.
-        </p>
       </div>
     </section>
   );
@@ -1966,8 +1960,9 @@ function SiteFooter() {
     <footer className="relative w-full border-t border-cyan-400/12 bg-[rgba(3,6,14,0.85)]">
       <div className="mx-auto w-full max-w-[1200px] px-6 py-6">
         <div className="flex flex-col items-center gap-4">
-          {/* Brand + social */}
-          <div className="flex flex-col items-center gap-3">
+          {/* Brand, with the government recognition marks directly beneath it at the
+              same width, then social */}
+          <div className="flex w-[min(100%,400px)] flex-col items-center gap-3">
             <a href="#home" className="flex w-full justify-center">
               <Image
                 src="/vidyouth-wordmark.png"
@@ -1975,9 +1970,48 @@ function SiteFooter() {
                 width={1000}
                 height={330}
                 priority
-                className="h-auto w-[min(100%,400px)] rounded-lg bg-white"
+                className="h-auto w-full rounded-lg bg-white"
               />
             </a>
+            <div className="grid w-full grid-cols-2 gap-3">
+              {RECOGNITION.map((r) => (
+                <div
+                  key={r.label}
+                  className="flex min-h-[80px] items-center gap-2.5 rounded-2xl border border-white/10 bg-[rgba(10,15,25,0.5)] px-2.5 py-2.5"
+                >
+                  {r.image ? (
+                    <Image
+                      src={r.image}
+                      alt={`${r.label} logo`}
+                      width={220}
+                      height={90}
+                      className="h-11 w-20 shrink-0 rounded-md bg-white object-contain p-1.5"
+                    />
+                  ) : r.flag ? (
+                    <span className="flex h-7 w-10 flex-col overflow-hidden rounded-sm border border-white/15">
+                      <span className="flex-1 bg-[#ff9933]" />
+                      <span className="flex-1 bg-white" />
+                      <span className="flex-1 bg-[#138808]" />
+                    </span>
+                  ) : (
+                    <span className="flex h-7 w-7 items-center justify-center rounded-md border border-cyan-400/20 bg-cyan-400/[0.06] text-[10px] font-bold text-cyan-200">
+                      {r.label.slice(0, 2).toUpperCase()}
+                    </span>
+                  )}
+                  <span className="flex min-w-0 flex-col leading-tight">
+                    {r.tag && (
+                      <span className="text-[9px] font-medium uppercase tracking-[0.1em] text-[#94a3b8]">
+                        {r.tag}
+                      </span>
+                    )}
+                    <span className="text-xs font-semibold text-white">{r.label}</span>
+                    {r.sub && (
+                      <span className="text-[9px] text-[#94a3b8]">{r.sub}</span>
+                    )}
+                  </span>
+                </div>
+              ))}
+            </div>
             <div className="flex items-center gap-3">
               <div className="flex gap-2.5">
                 {SOCIALS.map((s) => (
@@ -1994,47 +2028,6 @@ function SiteFooter() {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* Government recognition */}
-          <div className="flex w-full flex-wrap items-center justify-center gap-3 border-t border-white/5 pt-4 pb-0">
-            {RECOGNITION.map((r) => (
-              <div
-                key={r.label}
-                className="flex min-h-[96px] w-[230px] shrink-0 items-center gap-3 rounded-2xl border border-white/10 bg-[rgba(10,15,25,0.5)] px-3 py-3"
-              >
-                {r.image ? (
-                  <Image
-                    src={r.image}
-                    alt={`${r.label} logo`}
-                    width={220}
-                    height={90}
-                    className="h-12 w-24 shrink-0 rounded-md bg-white object-contain p-2"
-                  />
-                ) : r.flag ? (
-                  <span className="flex h-7 w-10 flex-col overflow-hidden rounded-sm border border-white/15">
-                    <span className="flex-1 bg-[#ff9933]" />
-                    <span className="flex-1 bg-white" />
-                    <span className="flex-1 bg-[#138808]" />
-                  </span>
-                ) : (
-                  <span className="flex h-7 w-7 items-center justify-center rounded-md border border-cyan-400/20 bg-cyan-400/[0.06] text-[10px] font-bold text-cyan-200">
-                    {r.label.slice(0, 2).toUpperCase()}
-                  </span>
-                )}
-                <span className="flex flex-col leading-tight">
-                  {r.tag && (
-                    <span className="text-[9px] font-medium uppercase tracking-[0.1em] text-[#94a3b8]">
-                      {r.tag}
-                    </span>
-                  )}
-                  <span className="text-xs font-semibold text-white">{r.label}</span>
-                  {r.sub && (
-                    <span className="text-[9px] text-[#94a3b8]">{r.sub}</span>
-                  )}
-                </span>
-              </div>
-            ))}
           </div>
 
           {/* Legal */}
