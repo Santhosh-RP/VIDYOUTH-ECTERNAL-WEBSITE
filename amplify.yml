@@ -7,6 +7,10 @@ frontend:
   phases:
     preBuild:
       commands:
+        # Next.js 16 needs Node >= 20.9; the build image's default may be older.
+        - nvm install 20
+        - nvm use 20
+        - node -v
         - npm ci
     build:
       commands:

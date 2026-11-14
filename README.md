@@ -37,7 +37,7 @@ Build settings (already encoded in `amplify.yml`):
 |---|---|
 | Build command | `npm run build` |
 | Output directory | `out` |
-| Node version | 18+ |
+| Node version | 20+ (pinned in `amplify.yml`; Next.js 16 needs ≥ 20.9) |
 
 ## Environment variables (optional)
 The defaults work as-is; set these in Amplify → **Hosting → Environment
