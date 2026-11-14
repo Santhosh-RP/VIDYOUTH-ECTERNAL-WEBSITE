@@ -20,6 +20,19 @@ npm run dev        # http://localhost:3000
 npm run build      # outputs the static site to ./out
 ```
 
+## Automatic deploys (live site)
+Every push to `main` runs `.github/workflows/deploy-amplify.yml`: it builds the
+static export and deploys it to the Amplify app **app4262** (`d2kwm4wkoxl8ma`,
+eu-north-1, branch `staging`), which serves **https://vidyouthintelligence.com**,
+then checks that `/` and `/docs/` return 200. It can also be started by hand from
+**Actions → Deploy to Amplify → Run workflow**.
+
+AWS access is GitHub OIDC — no keys are stored here. The repository variable
+`AWS_DEPLOY_ROLE_ARN` holds the role
+`arn:aws:iam::865526620135:role/vidyouth-prod-website-amplify-deploy`, which only
+this repo's `main` branch can assume and which can only deploy to app4262/staging
+(defined in `vidyouth-aws-infra/lean/github_deploy.tf` in the main Vidyouth repo).
+
 ## Deploy on AWS Amplify (primary)
 This repo ships an `amplify.yml` build spec, so Amplify configures itself on
 connect. Steps in the AWS Console:
