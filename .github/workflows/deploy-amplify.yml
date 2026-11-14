@@ -1,0 +1,120 @@
+# .github/workflows/deploy-amplify.yml
+#
+# Builds the Next.js static export on every push to `main` and pushes the
+# result into the EXISTING Amplify app app4262 (d2kwm4wkoxl8ma), branch
+# `staging`, which serves https://vidyouthintelligence.com
+#
+# app4262 is a manual-deploy app, so this workflow does what a Git-connected
+# Amplify app would do internally: build -> zip `out/` -> create-deployment ->
+# upload the zip -> start-deployment -> wait for SUCCEED.
+#
+# AUTH: uses GitHub OIDC (no long-lived AWS keys stored in GitHub).
+# Set the repository variable AWS_DEPLOY_ROLE_ARN to the IAM role ARN.
+# If you'd rather use access keys, see the commented block further down.
+
+name: Deploy to Amplify
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never let two deploys race each other onto the same branch.
+concurrency:
+  group: amplify-deploy-staging
+  cancel-in-progress: false
+
+permissions:
+  id-token: write   # required for OIDC
+  contents: read
+
+env:
+  AWS_REGION: eu-north-1
+  AMPLIFY_APP_ID: d2kwm4wkoxl8ma
+  AMPLIFY_BRANCH: staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        run: npm run build
+
+      - name: Sanity-check the build output
+        run: |
+          test -f out/index.html || { echo "out/index.html missing - not a static export?"; exit 1; }
+          echo "files: $(find out -type f | wc -l)"
+
+      - name: Zip the contents of out/
+        run: cd out && zip -rq "$RUNNER_TEMP/out.zip" .
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # --- Access-key alternative: delete the step above, uncomment this one,
+      # --- and add AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY as repo secrets.
+      # - name: Configure AWS credentials (access keys)
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy to Amplify and wait
+        run: |
+          set -euo pipefail
+
+          D=$(aws amplify create-deployment \
+                --app-id "$AMPLIFY_APP_ID" \
+                --branch-name "$AMPLIFY_BRANCH" \
+                --output json)
+          JOB=$(echo "$D" | jq -r .jobId)
+          URL=$(echo "$D" | jq -r .zipUploadUrl)
+          echo "job=$JOB"
+
+          curl -sSf -X PUT \
+               -H 'Content-Type: application/zip' \
+               --upload-file "$RUNNER_TEMP/out.zip" \
+               "$URL"
+
+          aws amplify start-deployment \
+              --app-id "$AMPLIFY_APP_ID" \
+              --branch-name "$AMPLIFY_BRANCH" \
+              --job-id "$JOB" >/dev/null
+
+          for i in $(seq 1 90); do
+            S=$(aws amplify get-job \
+                  --app-id "$AMPLIFY_APP_ID" \
+                  --branch-name "$AMPLIFY_BRANCH" \
+                  --job-id "$JOB" \
+                  --query 'job.summary.status' --output text)
+            echo "[$i] $S"
+            case "$S" in
+              SUCCEED)            echo "deployed"; exit 0 ;;
+              FAILED|CANCELLED)   echo "deployment $S"; exit 1 ;;
+            esac
+            sleep 10
+          done
+          echo "timed out waiting for deployment"; exit 1
+
+      - name: Verify the live site
+        run: |
+          set -euo pipefail
+          for P in / /docs/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://vidyouthintelligence.com$P")
+            echo "$P -> $code"
+            [ "$code" = 200 ] || exit 1
+          done
