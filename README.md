@@ -39,6 +39,23 @@ Build settings (already encoded in `amplify.yml`):
 | Output directory | `out` |
 | Node version | 18+ |
 
+## Environment variables (optional)
+The defaults work as-is; set these in Amplify → **Hosting → Environment
+variables** only to point the site somewhere else.
+
+| Variable | Default | Used for |
+|---|---|---|
+| `NEXT_PUBLIC_APP_URL` | `https://dy08yaj8o1qyw.cloudfront.net` | Login button, AI chat, `/redirect` |
+| `NEXT_PUBLIC_CONTACT_ENDPOINT` | `https://33o3mbswm1.execute-api.ap-south-1.amazonaws.com` | "Get In Touch" form |
+
+Set `NEXT_PUBLIC_APP_URL=https://lms.vidyouthintelligence.com` once that domain
+is attached to the app.
+
+> The contact-form API only accepts requests from `vidyouthintelligence.com`,
+> `www.vidyouthintelligence.com` and the marketing CloudFront URL. On an
+> `*.amplifyapp.com` URL the form is blocked by CORS until that origin is added
+> to the API (`vidyouth-aws-infra/lean/marketing.tf`).
+
 ## Custom domain (vidyouthintelligence.com)
 In Amplify → **Hosting → Custom domains → Add domain** → `vidyouthintelligence.com`
 (add `www` and root). Amplify issues the SSL cert and gives you the DNS records

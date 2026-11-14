@@ -9,7 +9,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-const APP = "https://lms.vidyouthintelligence.com";
+const APP = process.env.NEXT_PUBLIC_APP_URL || "https://dy08yaj8o1qyw.cloudfront.net";
 
 const SIGNUP: [string, string][] = [
   ["User", `${APP}/signup`],

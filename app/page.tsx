@@ -443,7 +443,7 @@ const CHAT_FAQS = [
 ] as const;
 
 // Backend base for the public FAQ chatbot (same LLM stack the LMS uses).
-const CHAT_API = "https://lms.vidyouthintelligence.com";
+const CHAT_API = process.env.NEXT_PUBLIC_APP_URL || "https://dy08yaj8o1qyw.cloudfront.net";
 
 type ChatMsg = { role: "user" | "assistant"; text: string };
 
@@ -1666,7 +1666,8 @@ function TrustSection() {
 // ──────────────────────────────────────────────────────────────────────────
 // Public serverless endpoint (API Gateway → Lambda → Resend) that emails the
 // enquiry to info@vidyouthintelligence.com. Independent of the app servers.
-const CONTACT_ENDPOINT = "https://bz8j5drco0.execute-api.ap-south-1.amazonaws.com";
+const CONTACT_ENDPOINT =
+  process.env.NEXT_PUBLIC_CONTACT_ENDPOINT || "https://33o3mbswm1.execute-api.ap-south-1.amazonaws.com";
 
 function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");

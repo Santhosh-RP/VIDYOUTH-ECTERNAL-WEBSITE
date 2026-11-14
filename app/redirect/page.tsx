@@ -8,7 +8,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const APP_HOST = "lms.vidyouthintelligence.com";
+const APP_HOST = new URL(process.env.NEXT_PUBLIC_APP_URL || "https://dy08yaj8o1qyw.cloudfront.net").hostname;
 const FALLBACK = `https://${APP_HOST}/login`;
 
 export default function RedirectBuffer() {
