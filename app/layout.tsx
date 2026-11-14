@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sora, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
+import { SITE_URL } from "./lib/site";
 
 // Display / heading face — Sora: a modern, geometric-humanist face that reads
 // as premium and technical without the cyberpunk-terminal feel.
@@ -21,10 +22,51 @@ const inter = Inter({
   display: "swap",
 });
 
+const TITLE = "Vidyouth — Empowering Talent. Advancing Semiconductors. Building India.";
+const DESCRIPTION =
+  "A semiconductor workforce development platform aligned with India's Semiconductor Mission (ISM) — lighting the path to electrical intelligence.";
+
 export const metadata: Metadata = {
-  title: "Vidyouth — Empowering Talent. Advancing Semiconductors. Building India.",
-  description:
-    "A semiconductor workforce development platform aligned with India's Semiconductor Mission (ISM) — lighting the path to electrical intelligence.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+  // Link previews (WhatsApp, LinkedIn, X, Slack…)
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Vidyouth Intelligence",
+    title: TITLE,
+    description: DESCRIPTION,
+    locale: "en_IN",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Vidyouth Intelligence Institute Pvt. Ltd." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@VidyouthEdu",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og-image.png"],
+  },
+};
+
+// Organisation details for search engines (schema.org).
+const ORGANIZATION_LD = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "Vidyouth Intelligence Institute Pvt. Ltd.",
+  alternateName: "Vidyouth Intelligence",
+  url: SITE_URL,
+  logo: `${SITE_URL}/vidyouth-logo.png`,
+  email: "info@vidyouthintelligence.com",
+  address: { "@type": "PostalAddress", addressLocality: "Hyderabad", addressCountry: "IN" },
+  sameAs: [
+    "https://www.linkedin.com/company/vidyouth-intelligence-institute-pvt-ltd/",
+    "https://www.instagram.com/vidyouthintelligence",
+    "https://www.youtube.com/@vidyouthintelligence",
+    "https://x.com/VidyouthEdu",
+  ],
 };
 
 export default function RootLayout({
@@ -47,6 +89,10 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-Y7GLQ299GH');`,
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_LD) }}
         />
       </head>
       <body className="min-h-full bg-[#08111F] text-[#FFFFFF]">

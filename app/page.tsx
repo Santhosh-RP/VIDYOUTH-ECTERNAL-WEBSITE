@@ -184,7 +184,7 @@ const COLLABORATION = [
   "Industry-relevant curriculum designed with KTSemicon experts",
   "Live projects & real-time design challenges",
   "Mentorship by working professionals",
-  "Direct placement opportunities for trained students",
+  "Placement support and hiring connections for trained students",
 ] as const;
 
 // Client-supplied credibility figures (from the reference brief).
@@ -272,7 +272,6 @@ const SOCIALS = [
   { name: "Instagram", icon: "instagram", href: "https://www.instagram.com/vidyouthintelligence?igsh=MWpscGVqOWEyODRxNQ==" },
   { name: "YouTube", icon: "youtube", href: "https://www.youtube.com/@vidyouthintelligence" },
   { name: "Twitter", icon: "twitter", href: "https://x.com/VidyouthEdu" },
-  { name: "Facebook", icon: "facebook", href: "#" },
 ] as const;
 
 // SWAP: government recognition marks — replace label badges with official logos.
@@ -2036,10 +2035,10 @@ function SiteFooter() {
               © 2026 Vidyouth Intelligence. All rights reserved.
             </p>
             <div className="flex gap-5 text-[11px] text-[#94a3b8]">
-              <a href="#" className="transition-colors duration-300 hover:text-cyan-200">
+              <a href="/privacy/" className="transition-colors duration-300 hover:text-cyan-200">
                 Privacy Policy
               </a>
-              <a href="#" className="transition-colors duration-300 hover:text-cyan-200">
+              <a href="/terms/" className="transition-colors duration-300 hover:text-cyan-200">
                 Terms of Service
               </a>
             </div>

@@ -1,4 +1,4 @@
-import { DocHead, Section, Step, Callout, Kbd, PageNav } from "../_ui";
+import { DocHead, Section, Step, Callout, PageNav, AppLink } from "../_ui";
 
 export default function MentorGuide() {
   return (
@@ -11,7 +11,7 @@ export default function MentorGuide() {
 
       <Section id="start" title="Become a mentor">
         <div className="my-1 flex flex-col gap-4">
-          <Step n={1} title="Sign up as a mentor">Register at <Kbd>lms.vidyouthintelligence.com/mentor/signup</Kbd> with your email.</Step>
+          <Step n={1} title="Sign up as a mentor">Register on the <AppLink path="/mentor/signup">mentor sign-up page</AppLink> with your email.</Step>
           <Step n={2} title="Verify &amp; sign in">Confirm your email and sign in with 2FA.</Step>
           <Step n={3} title="Build your mentor profile">Add your expertise, experience and a short bio so learners know how you can help.</Step>
         </div>

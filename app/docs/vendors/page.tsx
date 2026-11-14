@@ -1,4 +1,4 @@
-import { DocHead, Section, Step, Callout, Kbd, PageNav } from "../_ui";
+import { DocHead, Section, Step, Callout, PageNav, AppLink } from "../_ui";
 
 export default function VendorGuide() {
   return (
@@ -12,7 +12,7 @@ export default function VendorGuide() {
       <Section id="start" title="Become a vendor">
         <p>Vendors partner with Vidyouth to supply services and content. Getting set up works just like any account, with a vendor-specific sign-up.</p>
         <div className="my-1 flex flex-col gap-4">
-          <Step n={1} title="Sign up as a vendor">Go to <Kbd>lms.vidyouthintelligence.com/vendor/signup</Kbd> and register with your business email.</Step>
+          <Step n={1} title="Sign up as a vendor">Open the <AppLink path="/vendor/signup">vendor sign-up page</AppLink> and register with your business email.</Step>
           <Step n={2} title="Verify &amp; sign in">Confirm your email with the 6-digit code, then sign in with 2FA.</Step>
           <Step n={3} title="Complete your profile">Fill in your organisation details so your account can be reviewed and approved.</Step>
         </div>

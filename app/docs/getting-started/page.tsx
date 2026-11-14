@@ -1,4 +1,4 @@
-import { DocHead, Section, Step, Callout, Kbd, PageNav } from "../_ui";
+import { DocHead, Section, Step, Callout, PageNav, AppLink } from "../_ui";
 
 export default function GettingStarted() {
   return (
@@ -27,7 +27,7 @@ export default function GettingStarted() {
       <Section id="create-account" title="Create your account">
         <p>Signing up takes about a minute and uses a one-time code sent to your email — no long forms.</p>
         <div className="my-1 flex flex-col gap-4">
-          <Step n={1} title="Open the sign-up page">Go to <Kbd>lms.vidyouthintelligence.com/signup</Kbd>. Sign up with <strong className="text-white">Email</strong> or <strong className="text-white">Mobile</strong> — or continue with Google.</Step>
+          <Step n={1} title="Open the sign-up page">Open the <AppLink path="/signup">Vidyouth sign-up page</AppLink>. Sign up with <strong className="text-white">Email</strong> or <strong className="text-white">Mobile</strong> — or continue with Google.</Step>
           <Step n={2} title="Enter your details">Provide your name, email and a password (8+ characters, with a letter and a number), then accept the terms.</Step>
           <Step n={3} title="Verify your email">We email you a <strong className="text-white">6-digit code</strong>. Enter it to confirm your address.</Step>
           <Step n={4} title="You&apos;re in">Your account is created and you land on your dashboard.</Step>

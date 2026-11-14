@@ -60,31 +60,19 @@ export function Kbd({ children }: { children: ReactNode }) {
   return <code className="rounded-md border border-white/15 bg-white/[0.06] px-1.5 py-0.5 font-mono text-[12.5px] text-cyan-100">{children}</code>;
 }
 
-// Screenshot frame. Pass `src` (a /docs/shots/*.png) once captured; until then it
-// renders a labelled placeholder with browser chrome so the layout is real.
-export function Shot({ src, alt, caption, label }: { src?: string; alt: string; caption?: string; label?: string }) {
+// Link into the LMS app (same base URL the landing page's Login button uses).
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://dy08yaj8o1qyw.cloudfront.net";
+
+export function AppLink({ path, children }: { path: string; children: ReactNode }) {
   return (
-    <figure className="my-2 overflow-hidden rounded-xl border border-white/12 bg-[#0a1120] shadow-[0_16px_50px_-20px_rgba(0,0,0,0.7)]">
-      <div className="flex items-center gap-1.5 border-b border-white/10 bg-white/[0.03] px-3.5 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
-        <span className="ml-2 truncate text-[11px] text-slate-500">lms.vidyouthintelligence.com</span>
-      </div>
-      {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} className="block w-full" />
-      ) : (
-        <div className="flex aspect-[16/9] flex-col items-center justify-center gap-2 bg-[radial-gradient(circle_at_50%_40%,rgba(56,189,248,0.08),transparent_60%)] text-center">
-          <span className="grid h-11 w-11 place-items-center rounded-xl border border-cyan-400/25 bg-cyan-400/10 text-cyan-300">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="14" rx="2" /><circle cx="9" cy="10" r="2" /><path d="m21 15-4-4-9 7" /></svg>
-          </span>
-          <span className="text-[12px] font-semibold text-slate-300">{label ?? "Screenshot"}</span>
-          <span className="text-[11px] text-slate-500">Real screenshot coming</span>
-        </div>
-      )}
-      {caption && <figcaption className="border-t border-white/10 px-4 py-2.5 text-[12px] text-slate-400">{caption}</figcaption>}
-    </figure>
+    <a
+      href={`${APP_URL}${path}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-semibold text-cyan-300 underline decoration-cyan-400/40 underline-offset-4 transition-colors hover:text-cyan-200"
+    >
+      {children}
+    </a>
   );
 }
 
